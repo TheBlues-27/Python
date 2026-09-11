@@ -1,12 +1,12 @@
 import sqlite3 as sql
 
-def connector():
+def conectar():
     connect = sql.connect("escola.db")
     execute = connect.execute("PRAGMA foreign_keys = ON")
     return connect
 
-def create_tables():
-    connect = connector()
+def criar_tabelas():
+    connect = conectar()
     cursor = connect.cursor()
     
     cursor.execute("""
@@ -29,20 +29,21 @@ def create_tables():
             """)
     
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS inscricao(
+        CREATE TABLE IF NOT EXISTS inscricao (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             aluno_id INTEGER NOT NULL FOREIGN KEY REFERENCES aluno(id),
-            disciplina_id INTEGER NOT NULL FOREIGN KEY REFERENCES disciplina(id),
+            disciplina_id INTEGER NOT NULL,
+            FOREIGN KEY (disciplina_id)REFERENCES disciplina(id),
             nota1 REAL,
-            nota2 REAL
-            UNIQUE(aluno_id, disciplina_id))
+            nota2 REAL, 
+            UNIQUE(aluno_id, disciplina_id)
             """)
     
-    connector.commit()
+    conectar.commit()
     cursor.close()
-    connector.close()
+    conectar.close()
     
     print("Tabelas foram criadas (ou ja existem) em escola.db.")
     
 if __name__ == "__main__":
-    create_tables()
+    criar_tabelas()
