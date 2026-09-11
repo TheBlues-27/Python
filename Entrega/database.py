@@ -22,7 +22,7 @@ def criar_tabelas():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS disciplina (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            codiogo TEXT NOT NULL UNIQUE,
+            codigo TEXT NOT NULL UNIQUE,
             nome TEXT NOT NULL,
             carga_horaria INTEGER NOT NULL,
             periodo INTEGER)
@@ -31,17 +31,19 @@ def criar_tabelas():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS inscricao (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            aluno_id INTEGER NOT NULL FOREIGN KEY REFERENCES aluno(id),
+            aluno_id INTEGER NOT NULL, 
+            FOREIGN KEY (aluno_id) REFERENCES aluno(id),
             disciplina_id INTEGER NOT NULL,
-            FOREIGN KEY (disciplina_id)REFERENCES disciplina(id),
+            FOREIGN KEY (disciplina_id) REFERENCES disciplina(id),
             nota1 REAL,
             nota2 REAL, 
             UNIQUE(aluno_id, disciplina_id)
+            )
             """)
     
-    conectar.commit()
+    connect.commit()
     cursor.close()
-    conectar.close()
+    connect.close()
     
     print("Tabelas foram criadas (ou ja existem) em escola.db.")
     
