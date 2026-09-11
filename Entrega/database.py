@@ -38,7 +38,6 @@ def criar_tabelas():
             nota1 REAL,
             nota2 REAL, 
             UNIQUE(aluno_id, disciplina_id)
-            )
             """)
     
     connect.commit()

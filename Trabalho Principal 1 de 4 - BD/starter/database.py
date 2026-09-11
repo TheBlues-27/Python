@@ -37,20 +37,31 @@ def criar_tabelas():
             email           TEXT,
             data_nascimento TEXT,
             ativo           INTEGER NOT NULL DEFAULT 1
-        )
+        );
     """)
 
-    # ---------- TODO 1: tabela disciplina ----------
-    # Colunas: id (PK), codigo (TEXT, NOT NULL, UNIQUE), nome (TEXT, NOT NULL),
-    #          carga_horaria (INTEGER, NOT NULL), periodo (INTEGER)
-    # cursor.execute(""" ... """)
-
-    # ---------- TODO 2: tabela inscricao (associativa N:N) ----------
-    # Colunas: id (PK), aluno_id (FK -> aluno.id), disciplina_id (FK -> disciplina.id),
-    #          nota1 (REAL), nota2 (REAL)
-    # Nao esqueca: UNIQUE (aluno_id, disciplina_id) — um aluno nao se inscreve
-    # duas vezes na mesma disciplina.
-    # cursor.execute(""" ... """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS disciplina (
+            id              INTEGER PRIMARY KEY AUTOINCREMENT,
+            codigo          TEXT NOT NULL UNIQUE,
+            nome            TEXT NOT NULL,
+            carga_horaria   INTEGER NOT NULL,
+            periodo         INTEGER
+        );
+    """)
+    
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS inscricao (
+            id              INTEGER PRIMARY KEY AUTOINCREMENT,
+            aluno_id        INTEGER NOT NULL, 
+            disciplina_id   INTEGER NOT NULL,
+            nota1 REAL,
+            nota2 REAL, 
+            FOREIGN KEY (aluno_id) REFERENCES aluno(id),
+            FOREIGN KEY (disciplina_id) REFERENCES disciplina(id),
+            UNIQUE(aluno_id, disciplina_id)
+        )
+    """)
 
     conexao.commit()
     cursor.close()
