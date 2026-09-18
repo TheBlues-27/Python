@@ -19,7 +19,7 @@ def inserir_aluno(matricula, nome, email, data_nascimento):
     conexao = conectar()
     cursor = conexao.cursor()
     sql = """INSERT INTO aluno (matricula, nome, email, data_nascimento, ativo)
-             VALUES (?, ?, ?, ?, 1)"""
+            VALUES (?, ?, ?, ?, 1)"""
     valores = (matricula, nome, email, data_nascimento)
     try:
         cursor.execute(sql, valores)
@@ -38,20 +38,27 @@ def listar_alunos():
     conexao = conectar()
     cursor = conexao.cursor()
     cursor.execute("""SELECT id, matricula, nome, email, data_nascimento, ativo
-                      FROM aluno ORDER BY nome""")
+                    FROM aluno ORDER BY nome""")
     alunos = cursor.fetchall()
     cursor.close()
     conexao.close()
     return alunos
 
 
-# --------------------------------------------------------- TODO 3
+# --------------------------------------------------------- TODO 3 - DONE
 def buscar_aluno_por_id(id_aluno):
     """Devolve uma tupla com os dados do aluno, ou None se nao existir.
 
     Dica: use fetchone() no lugar de fetchall().
     """
-    pass
+    conexao = conectar()
+    cursor = conexao.cursor()
+    cursor.execute("""SELECT id, matricula, nome, email, data_nascimento, ativo
+                    FROM aluno WHERE id = ?""", (id_aluno,))
+    aluno = cursor.fetchone()
+    cursor.close()
+    conexao.close()
+    return aluno
 
 
 # --------------------------------------------------------- TODO 4
@@ -61,7 +68,15 @@ def atualizar_aluno(id_aluno, nome, email, data_nascimento):
     Dica: UPDATE aluno SET ... WHERE id = ?   (sem o WHERE voce altera TODOS)
     Depois do commit(), cursor.rowcount diz quantas linhas mudaram.
     """
-    pass
+    conexao = conectar()
+    cursor = conexao.cursor()
+    cursor.executa("""UPDATE aluno SET nome = ?, email = ?, data_nascimento = ?
+                    WHERE id = ?""", (nome, email, data_nascimento, id_aluno))
+    conexao.commit()
+    linhas = cursor.rowcount
+    print(f"Linhas alteradas: {linhas}")
+    cursor.close()
+    conexao.close()
 
 
 # --------------------------------------------------------- TODO 5
@@ -71,4 +86,15 @@ def excluir_aluno(id_aluno):
     Dica: se o aluno tiver inscricoes, o SQLite levanta sqlite3.IntegrityError.
     Trate a excecao e devolva False nesse caso.
     """
-    pass
+    conexao = conectar()
+    cursor = conexao.cursor()
+    try:
+        cursor.execute("""DELETE FROM aluno WHERE id = ?""", (id_aluno,))
+        conexao.commit()
+        linhas = cursor.rowcount
+        print(f"Linhas excluídas: {linhas}")
+        cursor.close()
+        conexao.close()
+    except sqlite3.IntegrityError:
+        return False
+

@@ -11,8 +11,8 @@ from database import criar_tabelas
 from crud_aluno import (inserir_aluno, listar_alunos, buscar_aluno_por_id,
                         atualizar_aluno, excluir_aluno)
 from crud_disciplina import (inserir_disciplina, listar_disciplinas,
-                             buscar_disciplina_por_id, atualizar_disciplina,
-                             excluir_disciplina)
+                            buscar_disciplina_por_id, atualizar_disciplina,
+                            excluir_disciplina)
 
 
 def ler_inteiro(mensagem):

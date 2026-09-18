@@ -60,7 +60,7 @@ def popular():
         try:
             cursor.execute(
                 """INSERT INTO inscricao (aluno_id, disciplina_id, nota1, nota2)
-                   VALUES (?, ?, ?, ?)""",
+                VALUES (?, ?, ?, ?)""",
                 (mapa_alunos[matricula], mapa_disciplinas[codigo], nota1, nota2))
         except Exception as erro:
             print("  (ignorado)", matricula, codigo, "->", erro)
@@ -69,7 +69,7 @@ def popular():
     conexao.close()
 
     print(f"Carga concluida: {len(listar_alunos())} alunos e "
-          f"{len(listar_disciplinas())} disciplinas no banco.")
+        f"{len(listar_disciplinas())} disciplinas no banco.")
 
 
 if __name__ == "__main__":

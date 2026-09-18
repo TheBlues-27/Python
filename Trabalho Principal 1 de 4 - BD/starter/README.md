@@ -7,9 +7,9 @@
 - **Disciplina:** ARA0095 — Desenvolvimento Rapido de Aplicacoes em Python
 - **Turma:**
 - **Integrantes do grupo:** (nome completo e matricula)
-  1.
-  2.
-  3.
+  1.Bruno Gabriel Caetano de Oliveira (202502310226)
+  2.Copilot (às vezes)
+  3.O que for que você chame de Deus
 
 ## Como executar
 
