@@ -70,12 +70,17 @@ def atualizar_aluno(id_aluno, nome, email, data_nascimento):
     """
     conexao = conectar()
     cursor = conexao.cursor()
-    cursor.executa("""UPDATE aluno SET nome = ?, email = ?, data_nascimento = ?
-                    WHERE id = ?""", (nome, email, data_nascimento, id_aluno))
-    conexao.commit()
-    linhas = cursor.rowcount
-    print(f"Linhas alteradas: {linhas}")
-    cursor.close()
+    try:
+        cursor.execute("""UPDATE aluno SET nome = ?, email = ?, data_nascimento = ?
+                        WHERE id = ?""", (nome, email, data_nascimento, id_aluno))
+        conexao.commit()
+        linhas = cursor.rowcount
+        print(f"Linhas alteradas: {linhas}")
+        cursor.close()
+        return cursor.rowcount > 0
+    except sqlite3.IntegrityError:
+        print(f"Erro: Aluno com id {id_aluno} não existe")
+        return False
     conexao.close()
 
 
@@ -91,10 +96,10 @@ def excluir_aluno(id_aluno):
     try:
         cursor.execute("""DELETE FROM aluno WHERE id = ?""", (id_aluno,))
         conexao.commit()
-        linhas = cursor.rowcount
-        print(f"Linhas excluídas: {linhas}")
-        cursor.close()
-        conexao.close()
+        return cursor.rowcount > 0
     except sqlite3.IntegrityError:
         return False
+    finally:
+        cursor.close()
+        conexao.close()
 
